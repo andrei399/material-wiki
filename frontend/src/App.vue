@@ -10,7 +10,9 @@
 
 export default {
   name: 'App',
-
+  theme: {
+    dark: true,
+  },
   data: () => ({
     //
   }),
