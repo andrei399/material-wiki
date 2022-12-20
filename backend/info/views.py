@@ -3,15 +3,15 @@ from rest_framework.response import Response
 
 # from rest_framework.viewsets import ModelViewSet
 
-# from backend import logger
+from backend import logger
 
 
 class TestAPI(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
-        # logger.info("TestAPI.get()")
-        print("TestAPI.get()")
+        logger.warning("TestAPI.get()")
+        # print("TestAPI.get()")
         message = {
             "title": "Geralt of Rivia",
             "img": "https://i.imgur.com/92cNLxg.jpg",
