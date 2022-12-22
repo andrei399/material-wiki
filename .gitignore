@@ -11,4 +11,25 @@
 # Built Visual Studio Code Extensions
 *.vsix
 
+# Temporary and binary files
+*~
+*.py[cod]
+*.so
+*.cfg
+!.isort.cfg
+!setup.cfg
+*.orig
+*.log
+*.pot
+__pycache__/*
+backend/info/__pycache__/*
+backend/__pycache__/*
+backend/__pycache__/urls.cpython-38.pyc
+.cache/*
+.*.swp
+*/.ipynb_checkpoints/*
+
+
 downloads/
+backend/example.env
+db.sqlite3

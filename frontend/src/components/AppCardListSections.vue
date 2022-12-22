@@ -6,8 +6,15 @@
             </v-title>
         </v-card-text>
         <v-column>
-            <v-card-text align="center" class="text mt-2" v-for="(item, key) in item.values" :key="key">
-                {{ item.value }} ce pls
+            <v-card-text @click="lets_go(cur_item)" class="text mt-2" v-for="(cur_item, key) in item.values" :key="key">
+                <v-col align="left">
+                    {{ cur_item.title }}
+                </v-col>
+                <v-col align="right" v-for="(value, key) in cur_item.values" :key="key">
+                    <v-row>
+                        {{ value }}
+                    </v-row>
+                </v-col>
             </v-card-text>
         </v-column>
     </v-card>
@@ -18,6 +25,7 @@
     font-weight: 500;
     font-size: 1.3rem;
 }
+
 .text {
     font-size: 1rem;
 }
@@ -39,7 +47,7 @@ export default ({
             required: true,
         },
     },
-    setup(){
+    setup() {
         return {}
     },
     created() {
@@ -47,7 +55,7 @@ export default ({
     },
     methods: {
         lets_go(item) {
-            console.log(item.values[0].values)
+            console.log(item.values)
         }
     }
 })
