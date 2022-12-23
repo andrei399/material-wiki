@@ -1,7 +1,8 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 
-# from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet
+from . import models, serializers
 
 from backend import logger
 
@@ -87,19 +88,7 @@ class TestAPI(generics.GenericAPIView):
         return Response(message)
 
 
-class Pula(generics.GenericAPIView):
+class PageModelView(ModelViewSet):
     permission_classes = (permissions.AllowAny,)
-
-    def get(self, request):
-        message = {
-            "title": "Geralt of Rivia",
-            "img": "https://i.imgur.com/92cNLxg.jpg",
-            "info": {
-                "0": {
-                    "title": "Basic Information",
-                    "type": "text",
-                    "value": "This should be a short text",
-                },
-            },
-        }
-        return Response(message)
+    serializer_class = serializers.PageSerializer
+    queryset = models.PageModel.objects.all()

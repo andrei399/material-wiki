@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class TopicCardSectionsListMemberModel(models.Model):
@@ -41,7 +42,12 @@ class TopicCardSectionsModel(models.Model):
 
 
 class ImageModel(models.Model):
-    image = models.ImageField(upload_to="images/", blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    image = models.ImageField(
+        upload_to=settings.IMAGE_DIR,
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return self.image
@@ -99,22 +105,46 @@ class ChapterModel(models.Model):
 
     type = models.CharField(choices=CHOICES, max_length=10)
 
-    table = models.ForeignKey(TableModel, on_delete=models.CASCADE, blank=True, null=True)
+    table = models.ForeignKey(
+        TableModel,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
 
     images = models.ManyToManyField(ImageModel, blank=True)
 
     text = models.CharField(max_length=10000, blank=True, null=True)
-    quote = models.ForeignKey(SingleQuoteModel, on_delete=models.CASCADE, blank=True, null=True)
+    quote = models.ForeignKey(
+        SingleQuoteModel,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
 
-    sub_chapters = models.ManyToManyField("self", blank=True)
+    sub_chapters = models.ManyToManyField(
+        "self",
+        blank=True,
+        symmetrical=False,
+    )
 
     def __str__(self):
         return self.name
 
+    def get_type(self):
+        for choice in self.CHOICES:
+            if choice[0] == self.type:
+                return choice[1]
+
 
 class ItemModel(models.Model):
     name = models.CharField(max_length=100)
-    quote = models.ForeignKey(SingleQuoteModel, on_delete=models.CASCADE, blank=True, null=True)
+    quote = models.ForeignKey(
+        SingleQuoteModel,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
     about = models.CharField(max_length=10000)
     # Contents to be created in the serializer
     chapter = models.ManyToManyField(ChapterModel, blank=True)
@@ -139,4 +169,4 @@ class PageModel(models.Model):
     quotes = models.ManyToManyField(QuoteModel, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.big_name

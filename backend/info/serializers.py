@@ -4,10 +4,7 @@ from typing import Union  # noqa
 # from backend import logger
 from . import models
 
-# TODO add serializer recursion for nested models
 
-
-# Construct a serializer for all the models
 class TopicCardSectionsListMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TopicCardSectionsListMemberModel
@@ -15,15 +12,23 @@ class TopicCardSectionsListMemberSerializer(serializers.ModelSerializer):
 
 
 class TopicCardSectionsListSerializer(serializers.ModelSerializer):
+    right = TopicCardSectionsListMemberSerializer(many=True)
+
     class Meta:
         model = models.TopicCardSectionsListModel
         fields = "__all__"
 
 
 class TopicCardSectionsSerializer(serializers.ModelSerializer):
+    type = serializers.SerializerMethodField()
+    list = TopicCardSectionsListSerializer(many=True)
+
     class Meta:
         model = models.TopicCardSectionsModel
         fields = "__all__"
+
+    def get_type(self, obj):
+        return obj.get_type()
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -33,6 +38,9 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class TopicCardSerializer(serializers.ModelSerializer):
+    image = ImageSerializer(many=True)
+    info = TopicCardSectionsSerializer(many=True)
+
     class Meta:
         model = models.TopicCardModel
         fields = "__all__"
@@ -74,45 +82,55 @@ class SingleQuoteSerializer(serializers.ModelSerializer):
 
 
 class ChapterSerializer(serializers.ModelSerializer):
-    # sub_chapters = serializers.SerializerMethodField(
-    #     source="get_sub_chapters",
-    # )
+    sub_chapters = serializers.SerializerMethodField()
+    type = serializers.SerializerMethodField()
+    images = ImageSerializer(many=True)
+    quote = SingleQuoteSerializer()
+    table = TableSerializer()
+
     class Meta:
         model = models.ChapterModel
         fields = "__all__"
 
-    # def get_sub_chapters(self, obj):
-    #     if obj.sub_chapters.count() == 0:
-    #         print("No sub chapters")
-    #         return None
-    #     my_obj = obj.sub_chapters.all()[0]
-    #     if my_obj.name == "test chapter 1_1":
-    #         # print("Introduction")
-    #         return ChapterSerializer(my_obj).data
-    # print()
+    def get_type(self, obj):
+        return obj.get_type()
 
-    # return ChapterSerializer(obj.sub_chapters.all(), many=True).data
+    def get_sub_chapters(self, obj):
+        if obj.sub_chapters.count() == 0:
+            return None
+        return ChapterSerializer(obj.sub_chapters.all(), many=True).data
 
 
 class ItemSerializer(serializers.ModelSerializer):
+    quote = SingleQuoteSerializer()
+    chapter = ChapterSerializer(many=True)
+    card = TopicCardSerializer()
+
     class Meta:
         model = models.ItemModel
         fields = "__all__"
 
 
 class QuoteSerializer(serializers.ModelSerializer):
+    quotes = SingleQuoteSerializer(many=True)
+
     class Meta:
         model = models.QuoteModel
         fields = "__all__"
 
 
 class PageSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True)
+    quotes = QuoteSerializer(many=True)
+
     class Meta:
         model = models.PageModel
         fields = "__all__"
 
 
-def get_entry(model, id):
-    if type(id) is list:
+def get_entry(model, value=None, attribute=None):
+    if attribute is None:
+        attribute = "id"
+    if type(value) is list:
         return model.objects.filter(id__in=id).all()
-    return model.objects.filter(id=id).first()
+    return model.objects.filter(**{attribute: value}).first()
