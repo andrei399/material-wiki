@@ -1,0 +1,13 @@
+======Anything before commit 8 is not documented======
+
+===Commit 9===
+==Backend==
+-Created slug for page 
+-Req for page detail by slug instead of id
+==Frontend==
+-Finished Title Card functionality (still using dummy backend)
+-Added Big Title
+-Added spoilers
+-Added tab functionality
+-Added quote
+-Added the quick summary section

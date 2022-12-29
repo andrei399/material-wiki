@@ -1,22 +1,28 @@
 <template>
-    <v-card elevation="3" class="mt-5 mb-10" shaped outlined>
-        <v-card-text align="center">
-            <v-title class="title" @click="lets_go(item)">
+    <v-card elevation="3" class="mt-5 mb-1" shaped outlined>
+        <v-card-text align="center" @click="expand(item)">
+            <v-title class="title">
                 {{ item.title }}
             </v-title>
+            <div v-if="item.expandable">
+                <v-icon v-if="item.expanded" align="left">mdi-chevron-down</v-icon>
+                <v-icon v-else align="left">mdi-chevron-up</v-icon>
+            </div>
         </v-card-text>
-        <v-column>
-            <v-card-text @click="lets_go(cur_item)" class="text mt-2" v-for="(cur_item, key) in item.values" :key="key">
-                <v-col align="left">
-                    {{ cur_item.title }}
-                </v-col>
-                <v-col align="right" v-for="(value, key) in cur_item.values" :key="key">
-                    <v-row>
-                        {{ value }}
+        <v-col cols="13" v-if="item.expanded">
+            <div>
+                <v-card-text class="text mt-2" v-for="(cur_item, key) in item.values" :key="key">
+                    <v-row v-for="(value, key) in cur_item.values" :key="key" align="right" no-gutters>
+                        <v-row align="left" no-gutters v-if="key === 0">
+                            {{ cur_item.title }}
+                        </v-row>
+                        <v-col class="values" align="right">
+                            {{ value }}
+                        </v-col>
                     </v-row>
-                </v-col>
-            </v-card-text>
-        </v-column>
+                </v-card-text>
+            </div>
+        </v-col>
     </v-card>
 </template>
 
@@ -26,21 +32,17 @@
     font-size: 1.3rem;
 }
 
+/* 
 .text {
     font-size: 1rem;
-}
+} */
 </style>
 
 
 <script>
-// import AppCardListSingle from './AppCardListSingle.vue'
-
 
 export default ({
     name: 'AppCardListSections',
-    components: {
-        // AppCardListSingle,
-    },
     props: {
         item: {
             type: Object,
@@ -50,13 +52,16 @@ export default ({
     setup() {
         return {}
     },
-    created() {
-        console.log(this.item)
+    data() {
+        return {
+            expandable: true,
+            expanded: false,
+        }
     },
     methods: {
-        lets_go(item) {
-            console.log(item.values)
-        }
-    }
+        expand(item) {
+            item.expanded = !item.expanded
+        },
+    },
 })
 </script>

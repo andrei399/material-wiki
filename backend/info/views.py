@@ -11,8 +11,7 @@ class TestAPI(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
-        logger.warning("TestAPI.get()")
-        # print("TestAPI.get()")
+        logger.info("TestAPI.get()")
         message = {
             "title": "Geralt of Rivia",
             "img": "https://i.imgur.com/92cNLxg.jpg",
@@ -20,6 +19,8 @@ class TestAPI(generics.GenericAPIView):
                 "0": {
                     "title": "Basic Information",
                     "type": "list",
+                    "expanded": True,
+                    "expandable": False,
                     "values": [
                         {
                             "title": "Allias(es)",
@@ -43,11 +44,13 @@ class TestAPI(generics.GenericAPIView):
                         },
                         {"title": "Skin", "values": ["Pale"]},
                         {"title": "Race", "values": ["Human"]},
-                        {"title:": "Gender", "values": ["Male"]},
+                        {"title": "Gender", "values": ["Male"]},
                     ],
                 },
                 "1": {
                     "title": "Physical Description",
+                    "expanded": True,
+                    "expandable": False,
                     "type": "list",
                     "values": [
                         {"title": "Title(s)", "values": ["Knight (knighted by Meve)"]},
@@ -66,6 +69,8 @@ class TestAPI(generics.GenericAPIView):
                 },
                 "2": {
                     "title": "Family",
+                    "expandable": True,
+                    "expanded": False,
                     "type": "list",
                     "values": [
                         {
@@ -92,3 +97,4 @@ class PageModelView(ModelViewSet):
     permission_classes = (permissions.AllowAny,)
     serializer_class = serializers.PageSerializer
     queryset = models.PageModel.objects.all()
+    lookup_field = "slug"

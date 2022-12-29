@@ -16,15 +16,23 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: '/item',
+    path: '/item/:slug',
     name: 'item',
-    component: () => import(/* webpackChunkName: "wireframe" */ '../views/ItemView.vue')
+    meta: {
+      title: 'Item'
+    },
+    component: () => import(/* webpackChunkName: "wireframe" */ '../views/ItemView.vue'),
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title || 'Home'
+  next()
 })
 
 export default router

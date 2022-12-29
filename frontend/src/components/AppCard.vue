@@ -50,7 +50,7 @@ export default ({
         }
     },
     async created() {
-        var data = await axios.get('http://127.0.0.1:8000/api/recipes/').catch(err => console.log(err))
+        var data = await axios.get('http://127.0.0.1:8000/api/items/').catch(err => console.log(err))
         data = data.data
         this.title = data.title
         this.infos = data.info

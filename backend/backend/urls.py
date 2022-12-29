@@ -22,17 +22,17 @@ urlpatterns = [
     re_path(r"^api/items/", views.TestAPI.as_view()),
     re_path(r"^api-auth/", include("rest_framework.urls")),
     path(
-        "pages/",
+        "api/pages/",
         views.PageModelView.as_view(
             {"get": "list", "post": "create"},
         ),
         name="page_list",
     ),
     path(
-        "page/<int:pk>/",
+        "api/page/<str:slug>/",
         views.PageModelView.as_view(
             {"get": "retrieve", "put": "update", "delete": "destroy"},
         ),
         name="page_detail",
-    )
+    ),
 ]

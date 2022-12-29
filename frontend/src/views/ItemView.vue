@@ -43,7 +43,7 @@
                         </v-col>
                         <v-col cols="12" sm="7" class="mx-auto">
                             <v-sheet elevation="3" min-height="70vh" rounded="lg">
-                                <h1>Detailed info about the topic</h1>
+                                <PageMain :data="my_data"/>
                             </v-sheet>
                         </v-col>
                         <v-col cols="12" sm="3" class="mx-auto">
@@ -60,11 +60,28 @@
 
 <script>
 import AppCard from '../components/AppCard.vue';
+import PageMain from '../components/PageMain.vue';
+import axios from 'axios';
 
 export default {
     name: 'TestWireframe',
     components: {
         AppCard,
+        PageMain,
     },
+    computed: {
+        slug() {
+            return this.$route.params.slug
+        }
+    },
+    async created() {
+        var data = await axios.get(`http://127.0.0.1:8000/api/page/${this.slug}`).catch(err => console.log(err))
+        this.my_data = data.data
+    },
+    data(){
+        return {
+            my_data: Object,
+        }
+    }
 };
 </script>

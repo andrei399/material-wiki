@@ -22,14 +22,17 @@
 *.log
 *.pot
 __pycache__/*
+__pycache__/
 backend/info/__pycache__/*
 backend/__pycache__/*
 backend/__pycache__/urls.cpython-38.pyc
 .cache/*
 .*.swp
+*.pyc
 */.ipynb_checkpoints/*
 
 
 downloads/
 backend/example.env
 db.sqlite3
+.ssh/
