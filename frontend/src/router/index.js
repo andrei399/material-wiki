@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
+
 const routes = [
   {
     path: '/',
@@ -21,8 +22,24 @@ const routes = [
     meta: {
       title: 'Item'
     },
-    component: () => import(/* webpackChunkName: "wireframe" */ '../views/ItemView.vue'),
-  }
+    component: () => import(/* webpackChunkName: "item" */ '../views/ItemView.vue'),
+  },
+  // {
+  //   path: '*',
+  //   name: 'not-found',
+  //   meta: {
+  //     title: 'Not Found'
+  //   },
+  //   component: () => import(/* webpackChunkName: "404" */ '../views/NotFoundView.vue'),
+  // },
+  {
+    path: '/404',
+    name: '404',
+    meta: {
+      title: 'Not Found'
+    },
+    component: () => import(/* webpackChunkName: "404" */ '../views/NotFoundView.vue'),
+  },
 ]
 
 const router = createRouter({

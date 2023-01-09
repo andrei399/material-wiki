@@ -8,12 +8,15 @@
                     </v-title>
                 </v-spacer>
             </v-row>
-            <v-img height="200" :src=img></v-img>
+            <v-img v-if="img.image" height="200" :src=img.image :title="img.name" @click="pula_mea()"></v-img> <!-- noqa -->
+            <v-btn v-else>
+                Upload Image
+            </v-btn>
             <div v-for="(item, key) in infos" :key="key">
                 <v-row>
                     <v-spacer>
-                        <AppCardTextSections v-if="item.type == 'text'" :item="item"/>
-                        <AppCardListSections v-else-if="item.type == 'list'" :item="item"/>
+                        <AppCardTextSections v-if="item.type == 'text'" :item="item" />
+                        <AppCardListSections v-else-if="item.type == 'list'" :item="item" />
                     </v-spacer>
                 </v-row>
             </div>
@@ -29,7 +32,7 @@
 </style>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import AppCardListSections from './AppCardListSections.vue'
 import AppCardTextSections from './AppCardTextSections.vue'
 
@@ -42,6 +45,16 @@ export default ({
     setup() {
         return {}
     },
+    props: {
+        payload: {
+            type: Object,
+            required: true,
+        },
+        tab: {
+            type: String,
+            required: true,
+        },
+    },
     data() {
         return {
             infos: Object,
@@ -50,15 +63,16 @@ export default ({
         }
     },
     async created() {
-        var data = await axios.get('http://127.0.0.1:8000/api/items/').catch(err => console.log(err))
-        data = data.data
-        this.title = data.title
-        this.infos = data.info
-        this.img = data.img
+        // var data = await this.data
+        // console.log(data)
+        var card_data = this.payload.items.filter(item => item.name == this.tab)[0].card
+        this.title = card_data.title
+        this.infos = card_data.info
+        this.img = card_data.image[0]
     },
     methods: {
-        pula_mea(item) {
-            console.log(item.type)
+        pula_mea() {
+            console.log(this.img)
         }
     }
 })

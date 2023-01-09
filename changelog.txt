@@ -11,3 +11,9 @@
 -Added tab functionality
 -Added quote
 -Added the quick summary section
+
+===Commit 10===
+==Backend==
+
+==Frontend==
+-Finished item page(I think)

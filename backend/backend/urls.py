@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path  # noqa
 from info import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     re_path(r"^admin/", admin.site.urls),
-    re_path(r"^api/items/", views.TestAPI.as_view()),
+    # re_path(r"^api/items/", views.TestAPI.as_view()),
     re_path(r"^api-auth/", include("rest_framework.urls")),
     path(
         "api/pages/",
@@ -35,4 +37,17 @@ urlpatterns = [
         ),
         name="page_detail",
     ),
-]
+    path(
+        "api/page/<str:slug>/card/<str:name>/image/<int:id>",
+        views.ImageView.as_view(
+            {"get": "retrieve", "put": "update", "delete": "destroy"},
+        ),
+    ),
+    path(
+        "api/imgs/",
+        views.SingleImageView.as_view(
+            {"get": "list", "post": "create"},
+        ),
+        name="image_list",
+    ),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

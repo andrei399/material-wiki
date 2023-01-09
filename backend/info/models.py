@@ -45,7 +45,7 @@ class TopicCardSectionsModel(models.Model):
 class ImageModel(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     image = models.ImageField(
-        upload_to=settings.IMAGE_DIR,
+        upload_to=settings.MEDIA_ROOT,
     )
 
     def __str__(self):
@@ -92,6 +92,7 @@ class SingleQuoteModel(models.Model):
 
 class ChapterModel(models.Model):
     name = models.CharField(max_length=100)
+    number = models.CharField(max_length=10)
 
     TEXT = "tx"
     GALLERY = "g"
@@ -110,6 +111,8 @@ class ChapterModel(models.Model):
         blank=True,
         null=True,
     )
+
+    disclaimer = models.CharField(max_length=10000, blank=True, null=True)
 
     images = models.ManyToManyField(ImageModel, blank=True)
 
@@ -164,6 +167,7 @@ class QuoteModel(models.Model):
 class PageModel(models.Model):
     spoilers = models.BooleanField(default=False)
     big_name = models.CharField(max_length=100)
+    under_construction = models.BooleanField(default=False)
     items = models.ManyToManyField(ItemModel)
     quotes = models.ManyToManyField(QuoteModel, blank=True)
     slug = models.SlugField(max_length=100, unique=True)

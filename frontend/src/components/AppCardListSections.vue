@@ -1,23 +1,29 @@
 <template>
     <v-card elevation="3" class="mt-5 mb-1" shaped outlined>
-        <v-card-text align="center" @click="expand(item)">
-            <v-title class="title">
-                {{ item.title }}
-            </v-title>
-            <div v-if="item.expandable">
-                <v-icon v-if="item.expanded" align="left">mdi-chevron-down</v-icon>
-                <v-icon v-else align="left">mdi-chevron-up</v-icon>
-            </div>
+        <v-card-text align="center" @click="expand(item)" class="title">
+            <v-card-title class="title white-clr" :class="{'expandable': item.expandable}">
+                <v-row align="center" >
+                    <v-spacer/>
+                    {{ item.name }}
+                    <div v-if="item.expandable">
+                        <v-icon v-if="item.expanded">mdi-chevron-down</v-icon>
+                        <v-icon v-else>mdi-chevron-up</v-icon>
+                    </div>
+                    <v-spacer/>
+                </v-row> 
+            </v-card-title>
         </v-card-text>
-        <v-col cols="13" v-if="item.expanded">
+        <v-col cols="13" v-if="(item.expanded && item.expandable) || (!item.expandable)" >
             <div>
-                <v-card-text class="text mt-2" v-for="(cur_item, key) in item.values" :key="key">
-                    <v-row v-for="(value, key) in cur_item.values" :key="key" align="right" no-gutters>
-                        <v-row align="left" no-gutters v-if="key === 0">
-                            {{ cur_item.title }}
+                <v-card-text class="text mt-2" v-for="(cur_item, key) in item.list" :key="key">
+                    <v-row no-gutters align="right">
+                        <v-row>
+                            {{ cur_item.left }}
                         </v-row>
-                        <v-col class="values" align="right">
-                            {{ value }}
+                        <v-col align="right" no-gutters>
+                            <v-row v-for="(value, key) in cur_item.right" :key="key" no-gutter class="right" align="right">
+                                {{ value.value }}
+                            </v-row>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -30,12 +36,19 @@
 .title {
     font-weight: 500;
     font-size: 1.3rem;
+    background-color: #314B75;
+}
+.white-clr {
+    color: white;
+}
+.leftbg {
+    background-color: #282828;
+    color: white;
 }
 
-/* 
-.text {
-    font-size: 1rem;
-} */
+.expandable:hover {
+    cursor: pointer;
+}
 </style>
 
 
@@ -54,13 +67,16 @@ export default ({
     },
     data() {
         return {
-            expandable: true,
             expanded: false,
+            hovering: false,
         }
     },
     methods: {
         expand(item) {
-            item.expanded = !item.expanded
+            if (item.expandable) {
+                item.expanded = !item.expanded
+
+            }
         },
     },
 })

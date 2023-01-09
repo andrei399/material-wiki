@@ -1,12 +1,13 @@
-from rest_framework import generics, permissions
-from rest_framework.response import Response
+from rest_framework import permissions
+
+# from rest_framework.response import Response
 
 from rest_framework.viewsets import ModelViewSet
 from . import models, serializers
 
-from backend import logger
+# from backend import logger
 
-
+"""
 class TestAPI(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny,)
 
@@ -91,6 +92,7 @@ class TestAPI(generics.GenericAPIView):
         }
 
         return Response(message)
+"""
 
 
 class PageModelView(ModelViewSet):
@@ -98,3 +100,26 @@ class PageModelView(ModelViewSet):
     serializer_class = serializers.PageSerializer
     queryset = models.PageModel.objects.all()
     lookup_field = "slug"
+
+
+class ImageView(ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = serializers.ImageSerializer
+    # queryset = models.PageModel.objects.all()
+    lookup_field = "id"
+
+    def get_queryset(self):
+        print(self.kwargs)
+        a = models.PageModel.objects.filter(slug=self.kwargs["slug"])
+        # a = a.items
+        a = a.first().items.filter(name=self.kwargs["name"]).first().card.image
+        print(serializers.ImageSerializer(a.first()).data)
+        # print(serializers.ItemSerializer(a.first().items.filter(name=self.kwargs['name']), many=True).data)
+        return a
+
+
+class SingleImageView(ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = serializers.ImageSerializer
+    queryset = models.ImageModel.objects.all()
+    lookup_field = "id"
