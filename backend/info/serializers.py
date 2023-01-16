@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from typing import Union  # noqa
 
-# from backend import logger
+from backend import logger  # noqa
 from . import models
 
 
@@ -125,6 +125,84 @@ class PageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.PageModel
+        fields = "__all__"
+
+
+class PageNameAndLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PageModel
+        fields = ["big_name", "slug"]
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    pages = PageNameAndLinkSerializer(many=True)
+
+    class Meta:
+        model = models.CategoryModel
+        fields = "__all__"
+
+
+class HomePageSectionSerializer(serializers.ModelSerializer):
+    image = ImageSerializer()
+
+    class Meta:
+        model = models.HomePageSectionModel
+        fields = "__all__"
+
+
+class RelatedWikiSerializer(serializers.ModelSerializer):
+    image = ImageSerializer(read_only=True)
+
+    class Meta:
+        model = models.RelatedWikiModel
+        fields = "__all__"
+
+
+class SocialMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.SocialMediaModel
+        fields = "__all__"
+
+
+class HomePageSerializer(serializers.ModelSerializer):
+    sections = HomePageSectionSerializer(many=True)
+    left_sections = HomePageSectionSerializer(many=True)
+    related_wikis = RelatedWikiSerializer(many=True)
+    social_media = SocialMediaSerializer(many=True)
+
+    class Meta:
+        model = models.HomePageModel
+        fields = "__all__"
+
+
+class FooterLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.FooterLinkModel
+        fields = "__all__"
+
+
+class FooterSectionSerializer(serializers.ModelSerializer):
+    links = FooterLinkSerializer(many=True)
+
+    class Meta:
+        model = models.FooterSectionModel
+        fields = "__all__"
+
+
+class FooterSerializer(serializers.ModelSerializer):
+    image = ImageSerializer()
+    extra_img = ImageSerializer()
+    socials = SocialMediaSerializer(many=True)
+    sections = FooterSectionSerializer(many=True)
+
+    class Meta:
+        model = models.FooterModel
+        fields = "__all__"
+
+
+class HPSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.HomePageSectionModel
         fields = "__all__"
 
 

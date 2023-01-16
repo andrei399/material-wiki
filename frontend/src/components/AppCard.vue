@@ -8,15 +8,15 @@
                     </v-title>
                 </v-spacer>
             </v-row>
-            <v-img v-if="img.image" height="200" :src=img.image :title="img.name" @click="pula_mea()"></v-img> <!-- noqa -->
+            <v-img v-if="img.image" height="200" :src=img.image :title="img.name"></v-img> <!-- noqa -->
             <v-btn v-else>
                 Upload Image
             </v-btn>
             <div v-for="(item, key) in infos" :key="key">
                 <v-row>
                     <v-spacer>
-                        <AppCardTextSections v-if="item.type == 'text'" :item="item" />
-                        <AppCardListSections v-else-if="item.type == 'list'" :item="item" />
+                        <AppCardTextSections v-if="item.type == 'text'" :item="item" class="info"/>
+                        <AppCardListSections v-else-if="item.type == 'list'" :item="item" class="info"/>
                     </v-spacer>
                 </v-row>
             </div>
@@ -29,10 +29,13 @@
 .bf {
     font-size: 2rem;
 }
+.info{
+    background-color: #616161;
+    color:white;
+}
 </style>
 
-<script>
-// import axios from 'axios'
+<script lang="js">
 import AppCardListSections from './AppCardListSections.vue'
 import AppCardTextSections from './AppCardTextSections.vue'
 
@@ -70,10 +73,5 @@ export default ({
         this.infos = card_data.info
         this.img = card_data.image[0]
     },
-    methods: {
-        pula_mea() {
-            console.log(this.img)
-        }
-    }
 })
 </script>

@@ -2,13 +2,13 @@
     <h1 @click="test()" align="center">Contents</h1>
     <v-timeline align-top align="center" side="start" truncate-line="both">
         <template v-for="(chapter, key) in sortChapter(timeline.chapter)" :key="key">
-            <v-timeline-item dot-color="purple" @click="scrollIntoView(chapter.number)">
+            <v-timeline-item dot-color="orange" @click="scrollIntoView(chapter.number)" size="small">
                 <template v-slot:opposite>
                     {{ chapter.name }}
                 </template>
                 {{ chapter.number }}
             </v-timeline-item>
-            <v-timeline-item v-for="(subchapter, key) in sortChapter(chapter.sub_chapters)" :key="key" @click="scrollIntoView(subchapter.number)">
+            <v-timeline-item size="small" v-for="(subchapter, key) in sortChapter(chapter.sub_chapters)" :key="key" @click="scrollIntoView(subchapter.number)">
                 <template v-slot:opposite>
                     {{ subchapter.name }}
                 </template>

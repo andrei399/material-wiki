@@ -15,8 +15,10 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = "/media/"
+MEDIA_ROOT = "media/"
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -92,18 +94,19 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
+pass_validation = "django.contrib.auth.password_validation."
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": f"{pass_validation}UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME": f"{pass_validation}MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME": f"{pass_validation}CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME": f"{pass_validation}NumericPasswordValidator",
     },
 ]
 
@@ -136,8 +139,8 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "simple": {
-            # "format": "%(asctime)s %(pathname)s:%(lineno)d %(levelname)s %(message)s",
-            "format": "%(asctime)s %(thread)d %(pathname)s:%(lineno)d %(levelname)s %(message)s",
+            "format": "%(asctime)s %(thread)d %(pathname)s:%(lineno)d " +
+            "%(levelname)s %(message)s",
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },

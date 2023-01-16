@@ -1,10 +1,16 @@
 <template>
-    <v-card cols="1" class="mx-auto mt-3 mb-3 ml-15 mr-15" elevation="3" color="#E6E6E6">
+    <v-card rounded="lg" width="90%" class="mx-auto mt-3 mb-3 orange" elevation="3" v-if="image_data">
         <v-card-text bold>
             <v-row cols="10" align="center">
-                <v-img cols="1" src="http://localhost:8000/media/Tw3_achievements_master_marksman_unlocked_u69DBjN.webp" width="50" height="50" />
-                <h4 align="center">"I shall organize, see to everything and whip the house into order</h4>
-                <v-img cols="1" src="http://localhost:8000/media/Tw3_achievements_master_marksman_unlocked_u69DBjN.webp" width="50" height="50" />
+                <v-col sm="1" align="left" v-if="image_data.image">
+                    <v-img sm="1" :src="image_data.image" :title="image_data.name" width="50" height="50" />
+                </v-col>
+                <v-col align="center" sm="10">
+                    <h4 align="center">"I shall organize, see to everything and whip the house into order"</h4>
+                </v-col>
+                <v-col align="right" v-if="image_data.image">
+                    <v-img sm="1" :src="image_data.image" :title="image_data.name" width="50" height="50" />
+                </v-col>
             </v-row>
         </v-card-text>
         <v-card-text align="center">
@@ -20,8 +26,13 @@ export default {
         return {}
     },
     data() {
-        return {}
+        return {
+            image_data: null,
+        }
     },
-    methods: {}
+    async created(){
+        var req_data = await this.$axios.get('http://localhost:8000/api/img/UNDER%20CONSTRUCTION/').catch().then(response => response.data)
+        this.image_data = req_data
+    },
 }
 </script>

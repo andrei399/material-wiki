@@ -1,10 +1,10 @@
 <template>
-    <div>
-        <v-card flat>
+    <div class="quote-bg">
+        <v-card flat class="quote-bg">
             <v-row>
-                <v-col align="left">
+                <v-col align="left" class="quote-bg">
                     <v-row>
-                        <v-col align="left">
+                        <v-col align="left" class="quote-bg">
                             <v-card-text>
                                 <v-icon>mdi-format-quote-open</v-icon>
                                 {{ removeFirstAndLastQuote(quote) }}
@@ -13,8 +13,8 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col align="right">
-                            <v-card-text>
+                        <v-col align="right" class="quote-bg">
+                            <v-card-text class="quote-bg">
                                 - {{ author }}
                             </v-card-text>
                         </v-col>
@@ -27,6 +27,13 @@
         </v-card>
     </div>
 </template>
+
+<style>
+.quote-bg{
+    background-color: #414141;
+    color:white;
+}
+</style>
 
 <script>
 export default {

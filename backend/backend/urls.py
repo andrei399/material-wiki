@@ -50,4 +50,52 @@ urlpatterns = [
         ),
         name="image_list",
     ),
+    path(
+        "api/img/<str:name>/",
+        views.SingleImageView.as_view(
+            {"get": "retrieve", "put": "update", "delete": "destroy"},
+        ),
+        name="image_detail",
+    ),
+    path(
+        "api/item/<int:id>/",
+        views.ItemView.as_view(
+            {"get": "retrieve", "put": "update", "delete": "destroy"},
+        ),
+        name="item_detail",
+    ),
+    path(
+        "api/home/",
+        views.HomePageView.as_view({"get": "list"}),
+        name="home_list",
+    ),
+    path(
+        "api/home/related_wiki/",
+        views.RelatedWikiView.as_view({"get": "list", "post": "create"}),
+        name="related_wiki_list",
+    ),
+    path(
+        "api/home/related_wiki/<int:id>/",
+        views.RelatedWikiView.as_view(
+            {"get": "retrieve", "put": "update", "delete": "destroy"},
+        ),
+        name="related_wiki_detail",
+    ),
+    path(
+        "api/home/footer/",
+        views.FooterView.as_view({"get": "list"}),
+        name="footer_list",
+    ),
+    path(
+        "api/home/sections/",
+        views.HPSView.as_view({"get": "list"}),
+        name="section_list",
+    ),
+    path(
+        "api/home/sections/<int:id>/",
+        views.HPSView.as_view(
+            {"get": "retrieve", "put": "update", "delete": "destroy"},
+        ),
+        name="section_list",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

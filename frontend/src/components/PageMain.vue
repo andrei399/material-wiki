@@ -2,13 +2,13 @@
     <div>
         <h1 align="center" @click="pula()">{{ payload.big_name }}</h1>
         <page-spoilers align="center" v-if="payload.spoilers" />
-        <v-tabs v-model="tab" v-for="(value, key) in payload.items" :key="key">
+        <v-tabs v-model="tab" v-for="(value, key) in payload.items" :key="key" class="tab">
             <v-tab :value="value.name" @click="$emit('tab', value.name)">{{ value.name }}</v-tab>
         </v-tabs>
         <v-window v-model="tab" v-for="(value, key) in payload.items" :key="key">
             <v-window-item :value="value.name">
                 <PageUnderConstruction v-if="value.under_construction" />
-                <item-quote :quote="value.quote.quote" :author="value.quote.author" v-if="value.quote" @click="changeConstruction(value)"/>
+                <item-quote :quote="value.quote.quote" :author="value.quote.author" v-if="value.quote"/>
                 <v-card-text v-if="value.about" class="text">
                     {{ value.about }}
                 </v-card-text>
@@ -22,10 +22,11 @@
                                 mdi-share
                             </v-icon>
                         </h2>
+                        <ChapterDisclaimer v-if="chapter.disclaimer" :text="chapter.disclaimer" />
                         <v-card v-if="chapter.quote || chapter.image" flat>
-                            <v-card-text>
-                                <v-row>
-                                    <v-col align="left" v-if="chapter.quote">
+                            <v-card-text class="quote-bg">
+                                <v-row class="quote-bg">
+                                    <v-col align="left" v-if="chapter.quote" class="quote-bg">
                                         <item-quote :quote="chapter.quote.quote" :author="chapter.quote.author" />
                                     </v-col>
                                     <v-col align="right" v-if="chapter.quote.image">
@@ -39,7 +40,7 @@
                             {{ chapter.text }}
                         </v-card-text>
                         <div v-if="chapter.sub_chapters" class="text">
-                            <v-card-text v-for="(subchapter, key) in sortChapter(chapter.sub_chapters)" :key="key">
+                            <v-card-text v-for="(subchapter, key) in sortChapter(chapter.sub_chapters)" :key="key" class="quote-bg">
                                 <h3 @mouseover="subchapter.hover = true" @mouseleave="subchapter.hover = false"
                                     :ref="subchapter.number">
                                     {{ subchapter.name }}
@@ -48,8 +49,9 @@
                                         mdi-share
                                     </v-icon>
                                 </h3>
-                                <v-card v-if="chapter.quote">
-                                    <v-card-text>
+                                <ChapterDisclaimer v-if="subchapter.disclaimer" :text="subchapter.disclaimer" />
+                                <v-card v-if="chapter.quote" class="quote-bg">
+                                    <v-card-text class="quote-bg">
                                         <item-quote :quote="subchapter.quote.quote" :author="subchapter.quote.author"
                                             v-if="subchapter.quote" />
                                     </v-card-text>
@@ -71,11 +73,19 @@
 .text {
     font-size: 1rem;
 }
+.tab {
+    color: orange
+}
+.quote-bg{
+    background-color: #414141;
+    color:white;
+}
 </style>
 
 <script>
 import PageSpoilers from './PageSpoilers.vue'
 import ItemQuote from './ItemQuote.vue'
+import ChapterDisclaimer from './ChapterDisclaimer.vue'
 import PageUnderConstruction from './PageUnderConstruction.vue'
 
 export default {
@@ -87,6 +97,7 @@ export default {
     components: {
     PageSpoilers,
     ItemQuote,
+    ChapterDisclaimer,
     PageUnderConstruction,
 },
     data() {
@@ -107,6 +118,7 @@ export default {
             console.log(this.$refs)
         },
         copy(item) {
+            console.log(item)
             const text_to_copy = `${window.location.host}${window.location.pathname}#${item.number}`
             navigator.clipboard.writeText(text_to_copy).finally(() => {
                 console.log(`Copied ${text_to_copy} to clipboard`)
@@ -124,9 +136,6 @@ export default {
             catch (e) {
                 return chapter
             }
-        },
-        changeConstruction(value) {
-            value.under_construction = !value.under_construction
         },
     },
     created() {

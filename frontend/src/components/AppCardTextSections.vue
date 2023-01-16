@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="3" class="mt-5 mb-10" shaped outlined>
+    <v-card elevation="3" class="mb-2 mt-4" shaped outlined>
         <v-card-text class="title" align="center">
             <v-title @click="expand(item)" class="white-clr">
                 {{ item.name }}
@@ -17,7 +17,8 @@
 .title {
     font-weight: 500;
     font-size: 1.3rem;
-    background-color: #314B75
+    background-color: rgb(194, 128, 4);
+    /* background-color: #314B75 */
     /* Change text color to be pretty with background color */
 }
 .white-clr {
